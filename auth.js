@@ -23,20 +23,22 @@ app.controller('gac', function($scope, $window) {
     };
 
     var signinChanged = function(isSignedIn) {
-        console.log('signinChanged() = ', isSignedIn);
+        console.log('signinChanged() = ' + isSignedIn);
         if(isSignedIn) {
             console.log('the user must be signed in to print this');
             var googleUser = auth2.currentUser.get();
+            var authResponse = googleUser.getAuthResponse();
             var profile = googleUser.getBasicProfile();
-            $scope.user.idToken   = googleUser.getAuthResponse().id_token;
-            $scope.user.fullName  = profile.getName();
-            $scope.user.firstName = profile.getGivenName();
-            $scope.user.lastName  = profile.getFamilyName();
-            $scope.user.photo     = profile.getImageUrl();
-            $scope.user.email     = profile.getEmail();
-            $scope.user.domain    = googleUser.getHostedDomain();
-            $scope.user.timestamp = moment().format();
-            $scope.user.ip        = VIH_HostIP;
+            $scope.user.fullName    = profile.getName();
+            $scope.user.firstName   = profile.getGivenName();
+            $scope.user.lastName    = profile.getFamilyName();
+            $scope.user.photo       = profile.getImageUrl();
+            $scope.user.email       = profile.getEmail();
+            $scope.user.domain      = googleUser.getHostedDomain();
+            $scope.user.timestamp   = moment().format('x');
+            $scope.user.ip          = VIH_HostIP;
+            $scope.user.idToken     = authResponse.id_token;
+            $scope.user.expiresAt   = authResponse.expires_at;
             $scope.$digest();
         } else {
             console.log('the user must not be signed in if this is printing');
@@ -46,7 +48,7 @@ app.controller('gac', function($scope, $window) {
     };
 
     var userChanged = function(user) {
-        console.log('userChanged() = ', user);
+        console.log('userChanged() = ' + user);
     };
     
     $scope.signOut = function() {
