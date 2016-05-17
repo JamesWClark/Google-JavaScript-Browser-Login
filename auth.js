@@ -31,6 +31,7 @@ app.controller('gac', function($scope, $window) {
         console.log('userChanged() = ', googleUser);
         
         if(auth2.isSignedIn && auth2.isSignedIn.get()) {
+            console.log('populating user properties (since they signed in)');
             var profile = googleUser.getBasicProfile();
             $scope.user.idToken   = googleUser.getAuthResponse().id_token;
             $scope.user.fullName  = profile.getName();
@@ -43,6 +44,7 @@ app.controller('gac', function($scope, $window) {
             $scope.user.ip        = VIH_HostIP;
             $scope.$digest();
         } else {
+            console.log('no user signed in - erasing any properties on the user');
             $scope.user = {};
             $scope.$digest();
         }
