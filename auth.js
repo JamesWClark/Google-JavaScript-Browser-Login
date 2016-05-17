@@ -15,7 +15,6 @@ app.controller('gac', function($scope, $window) {
         gapi.load('auth2', initSigninV2);
     };
 
-
     var initSigninV2 = function() {
         console.log('initSigninV2()');
         auth2 = gapi.auth2.getAuthInstance();
@@ -30,8 +29,8 @@ app.controller('gac', function($scope, $window) {
     // this seems to fire right before the signout happens, as if to provide a reference to the user object on their way out of the application
     var userChanged = function(googleUser) {
         console.log('userChanged() = ', googleUser);
-        // if the page is refreshed and user is signed out, the script still generates a user with null fields
-        if(googleUser.El != null && googleUser.hg != null) {
+        
+        if(auth2.isSignedIn && auth2.isSignedIn.get()) {
             var profile = googleUser.getBasicProfile();
             $scope.user.idToken   = googleUser.getAuthResponse().id_token;
             $scope.user.fullName  = profile.getName();
