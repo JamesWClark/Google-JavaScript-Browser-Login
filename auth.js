@@ -6,9 +6,9 @@ var app = angular.module('ga',[]);
 
 app.controller('gac', function($scope, $window) {
     
-    $scope.user = {};
-    
     var auth2;
+    
+    $scope.user = {};
 
     $window.appStart = function() {
         console.log('appStart()');
@@ -22,16 +22,11 @@ app.controller('gac', function($scope, $window) {
         auth2.currentUser.listen(userChanged);
     };
 
-    var signinChanged = function(val) {
-        console.log('signinChanged() = ', val);
-    };
-
-    // this seems to fire right before the signout happens, as if to provide a reference to the user object on their way out of the application
-    var userChanged = function(googleUser) {
-        console.log('userChanged() = ', googleUser);
-        
-        if(auth2.isSignedIn && auth2.isSignedIn.get()) {
-            console.log('populating user properties (since they signed in)');
+    var signinChanged = function(isSignedIn) {
+        console.log('signinChanged() = ', isSignedIn);
+        if(isSignedIn) {
+            console.log('the user must be signed in to print this');
+            var googleUser = auth2.currentUser.get();
             var profile = googleUser.getBasicProfile();
             $scope.user.idToken   = googleUser.getAuthResponse().id_token;
             $scope.user.fullName  = profile.getName();
@@ -44,20 +39,26 @@ app.controller('gac', function($scope, $window) {
             $scope.user.ip        = VIH_HostIP;
             $scope.$digest();
         } else {
-            console.log('no user signed in - erasing any properties on the user');
+            console.log('the user must not be signed in if this is printing');
             $scope.user = {};
             $scope.$digest();
         }
     };
 
+    var userChanged = function(user) {
+        console.log('userChanged() = ', user);
+    };
+    
     $scope.signOut = function() {
         console.log('signOut()');
-        auth2 = gapi.auth2.getAuthInstance().signOut();
+        gapi.auth2.getAuthInstance().signOut();
+        console.log(auth2);
     };
     
     $scope.disconnect = function() {
         console.log('disconnect()');
-        auth2 = gapi.auth2.getAuthInstance().disconnect();
+        gapi.auth2.getAuthInstance().disconnect();
+        console.log(auth2);
     };
 });
 
