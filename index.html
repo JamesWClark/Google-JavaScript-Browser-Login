@@ -4,30 +4,74 @@
 <head>
   <title>Google Login JavaScript</title>
   <meta name="google-signin-client_id" content="342876179484-j1svlvjorpa0bptu960gj208psn9r71t.apps.googleusercontent.com">
+  <link rel="stylesheet" href="main.css">
+  <script>
+    VIH_DisplayOnPage = "no";
+  </script>
+  <script src="https://scripts.hashemian.com/js/visitorIPHOST.js.php"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.3/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.5/angular.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment.min.js"></script>
   <script src="auth.js"></script>
   <script src="https://apis.google.com/js/platform.js?onload=appStart" async defer></script>
 </head>
 
 <body ng-app="ga" ng-controller="gac">
-  <div id="signin" class="g-signin2"></div>
-  <button id="signout" ng-click="signOut()">Signout</button>
-  <button id="disconnect" ng-click="disconnect()">Disconnect</button>
   
-  <div>
-    <div>Signed in Cell: <span id="signed-in-cell">--</span></div>
-    <br>
-    <div>Current User: <span id="curr-user-cell">--</span></div>
-    <br>
-    <div>User ID: <span id="user-id">--</span></div>
-    <br>
-    <div>User Scopes: <span id="user-scopes">--</span></div>
-    <br>
-    <div>Auth Response: <span id="auth-response">--</span></div>
+  <div id="main">
+
+    <div id="nav">
+      <div id="signin" class="g-signin2"></div>
+      <button id="signout" ng-click="signOut()">Signout</button>
+      <button id="disconnect" ng-click="disconnect()">Disconnect</button>      
+    </div>
+    
+    <div id="user-details">
+      <table>
+        <tr>
+          <td><img ng-show="user.photo" ng-src="{{ user.photo }}"></td>
+          <td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td>Photo URL: </td>
+          <td>{{ user.photo }}</td>
+        </tr>
+        <tr>
+          <td>Full Name: </td>
+          <td>{{ user.fullName }}</td>
+        </tr>
+        <tr>
+          <td>First Name: </td>
+          <td>{{ user.firstName }}</td>
+        </tr>
+        <tr>
+          <td>Last Name: </td>
+          <td>{{ user.lastName }}</td>
+        </tr>
+        <tr>
+          <td>Email: </td>
+          <td>{{ user.email }}</td>
+        </tr>
+        <tr>
+          <td>Domain: </td>
+          <td>{{ user.domain }}</td>
+        </tr>
+        <tr>
+          <td>Timestamp: </td>
+          <td>{{ user.timestamp }}</td>
+        </tr>
+        <tr>
+          <td>IP Address: </td>
+          <td>{{ user.ip }}</td>
+        </tr>
+        <tr>
+          <td>ID Token: </td>
+          <td>{{ user.idToken }}</td>
+        </tr>
+      </table>      
+    </div>
+    
   </div>
-  
-  <p>{{ hi }}</p>
 
 </body>
 

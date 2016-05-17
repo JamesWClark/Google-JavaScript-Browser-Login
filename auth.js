@@ -1,69 +1,62 @@
+// essential reads:
+// http://stackoverflow.com/a/13016081/1161948
+// https://developers.google.com/identity/sign-in/web/backend-auth#send-the-id-token-to-your-server
+
 var app = angular.module('ga',[]);
 
 app.controller('gac', function($scope, $window) {
-    $scope.hi = 'hi';
+    
+    $scope.user = {};
     
     var auth2;
 
     $window.appStart = function() {
-        console.log('loading api');
+        console.log('appStart()');
         gapi.load('auth2', initSigninV2);
     };
 
 
     var initSigninV2 = function() {
-        console.log('init signin v2');
+        console.log('initSigninV2()');
         auth2 = gapi.auth2.getAuthInstance();
         auth2.isSignedIn.listen(signinChanged);
         auth2.currentUser.listen(userChanged);
     };
 
     var signinChanged = function(val) {
-        console.log('signin state changed to ', val);
-        if(val === false) {
-            updateHtml(false);
-        }
+        console.log('signinChanged() = ', val);
     };
 
     // this seems to fire right before the signout happens, as if to provide a reference to the user object on their way out of the application
     var userChanged = function(googleUser) {
-        console.log('user changed: ', googleUser);
+        console.log('userChanged() = ', googleUser);
         // if the page is refreshed and user is signed out, the script still generates a user with null fields
-        if(googleUser.El == null && googleUser.hg == null) {
-            updateHtml(false);
+        if(googleUser.El != null && googleUser.hg != null) {
+            var profile = googleUser.getBasicProfile();
+            $scope.user.idToken   = googleUser.getAuthResponse().id_token;
+            $scope.user.fullName  = profile.getName();
+            $scope.user.firstName = profile.getGivenName();
+            $scope.user.lastName  = profile.getFamilyName();
+            $scope.user.photo     = profile.getImageUrl();
+            $scope.user.email     = profile.getEmail();
+            $scope.user.domain    = googleUser.getHostedDomain();
+            $scope.user.timestamp = moment().format();
+            $scope.user.ip        = VIH_HostIP;
+            $scope.$digest();
         } else {
-            updateHtml(googleUser);
+            $scope.user = {};
+            $scope.$digest();
         }
     };
 
     $scope.signOut = function() {
-        console.log('signing out');
-        auth2 = gapi.auth2.getAuthInstance();
-        auth2.signOut();
-        updateHtml(false);
+        console.log('signOut()');
+        auth2 = gapi.auth2.getAuthInstance().signOut();
     };
     
     $scope.disconnect = function() {
-        console.log('disconnecting');
+        console.log('disconnect()');
         auth2 = gapi.auth2.getAuthInstance().disconnect();
-        updateHtml(false);
-    };
-
-    var updateHtml = function(googleUser) {
-        console.log('update html: ', googleUser === false ? 'dashes' : googleUser);
-        if(googleUser) {
-            $('#curr-user-cell').text(JSON.stringify(googleUser, undefined, 2));
-            $('#signed-in-cell').text(auth2.isSignedIn.get());
-            $('#user-id').text(googleUser.getId());
-            $('#user-scopes').text(googleUser.getGrantedScopes());
-            $('#auth-response').text(JSON.stringify(googleUser.getAuthResponse(), undefined, 2));    
-        } else {
-            $('#curr-user-cell').text('--');
-            $('#signed-in-cell').text('--');
-            $('#user-id').text('--');
-            $('#user-scopes').text('--');
-            $('#auth-response').text('--');  
-        }
     };
 });
 
