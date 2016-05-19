@@ -1,0 +1,9 @@
+{
+  "name": "Google-Web-Login",
+  "version": "0.0.1",
+  "description": "Demonstrating Google Web Login with Angularjs",
+  "main": "app.js",
+  "dependencies": {
+    "express": "^4.13.4",
+  }
+}
