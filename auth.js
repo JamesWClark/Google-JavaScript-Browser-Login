@@ -21,7 +21,7 @@ app.controller('gac', function($scope, $window) {
         auth2.isSignedIn.listen(signinChanged);
         auth2.currentUser.listen(userChanged);
 
-        console.log('after initSigninV2(), auth2 = ' + auth2);
+        console.log('after initSigninV2(), auth2 = ' + JSON.stringify(auth2));
         if(auth2.isSignedIn.get() == true) {
             auth2.signIn();
         }
@@ -53,7 +53,7 @@ app.controller('gac', function($scope, $window) {
     };
 
     var userChanged = function(user) {
-        console.log('userChanged() = ' + user);
+        console.log('userChanged() = ' + JSON.stringify(user));
     };
     
     $scope.signOut = function() {
