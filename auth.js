@@ -34,6 +34,7 @@ app.controller('gac', function($scope, $window) {
             var googleUser = auth2.currentUser.get();
             var authResponse = googleUser.getAuthResponse();
             var profile = googleUser.getBasicProfile();
+            $scope.user.id          = profile.getId();
             $scope.user.fullName    = profile.getName();
             $scope.user.firstName   = profile.getGivenName();
             $scope.user.lastName    = profile.getFamilyName();
