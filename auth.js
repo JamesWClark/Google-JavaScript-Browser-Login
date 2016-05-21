@@ -20,6 +20,11 @@ app.controller('gac', function($scope, $window) {
         auth2 = gapi.auth2.getAuthInstance();
         auth2.isSignedIn.listen(signinChanged);
         auth2.currentUser.listen(userChanged);
+
+        console.log('after initSigninV2(), auth2 = ' + auth2);
+        if(auth2.isSignedIn.get() == true) {
+            auth2.signIn();
+        }
     };
 
     var signinChanged = function(isSignedIn) {
