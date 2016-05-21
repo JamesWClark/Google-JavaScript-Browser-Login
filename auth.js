@@ -53,13 +53,13 @@ app.controller('gac', function($scope, $window) {
     
     $scope.signOut = function() {
         console.log('signOut()');
-        gapi.auth2.getAuthInstance().signOut();
+        auth2.signOut();
         console.log(auth2);
     };
     
     $scope.disconnect = function() {
         console.log('disconnect()');
-        gapi.auth2.getAuthInstance().disconnect();
+        auth2.disconnect();
         console.log(auth2);
     };
 });
