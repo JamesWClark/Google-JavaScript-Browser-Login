@@ -58,13 +58,17 @@ app.controller('gac', function($scope, $window) {
     
     $scope.signOut = function() {
         console.log('signOut()');
-        auth2.signOut();
+        auth2.signOut().then(function() {
+            signinChanged(false);    
+        });
         console.log(auth2);
     };
     
     $scope.disconnect = function() {
         console.log('disconnect()');
-        auth2.disconnect();
+        auth2.disconnect().then(function() {
+            signinChanged(false);
+        });
         console.log(auth2);
     };
 });
