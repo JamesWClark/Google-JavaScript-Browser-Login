@@ -41,7 +41,6 @@ app.controller('gac', function($scope, $window) {
             $scope.user.email       = profile.getEmail();
             $scope.user.domain      = googleUser.getHostedDomain();
             $scope.user.timestamp   = moment().format('x');
-            $scope.user.ip          = VIH_HostIP;
             $scope.user.idToken     = authResponse.id_token;
             $scope.user.expiresAt   = authResponse.expires_at;
             $scope.$digest();
